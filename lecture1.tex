@@ -1,0 +1,73 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{packages}
+
+\title{АиСД, пилотный поток. Лекция 1.}
+\author{}
+\date{}
+
+\begin{document}
+    \maketitle
+
+    \begin{definition}
+        \textit{Вероятностное пространство} --- тройка объектов \( \left( \Omega, 2^\Omega, \Prob \right) \), где
+        \begin{itemize}
+            \item \( \Omega \) --- множество элементарных исходов;
+            \item \( 2^\Omega \) --- множество событий (где каждое событие --- некий набор исходов);
+            \item \( \Prob : \Omega \to [0, 1] \) --- функция, сопоставляющая каждому исходу вероятность его наступления. При этом \(\sum\limits_{\omega \in \Omega} \Prob(\omega) = 1\).
+        \end{itemize}
+    \end{definition}
+
+    \begin{remark}
+        Все приводимые в данном курсе утверждения о вероятности справедливы лишь для вероятностных пространств с конечным множеством элементарных исходов.
+    \end{remark}
+
+    Пусть \( A \in 2^\Omega \) --- некое событие. Будем обозначать вероятность события \( A \) как \( \Prob(A) \).
+
+    Вероятность события равна сумме вероятностей входящих в него элементарных исходов, то есть \( \Prob(A) = \sum\limits_{\omega \in A} \Prob(\omega) \).
+
+    \begin{definition}
+        Событие \( A \) называется \textit{невозможным}, если \( \Prob(A) = 0 \).
+    \end{definition}
+
+    \begin{definition}
+        Событие \( A \) называется \textit{достоверным}, если \( \Prob(A) = 1 \).
+    \end{definition}
+
+    \begin{definition}
+        \( \Prob(A | B) \) обозначает \textit{условную вероятность}, то есть вероятность наступления события \( A \) при условии наступления события \( B \).
+    \end{definition}
+
+    \[ \Prob(A | B) = \frac{\Prob(A \cap B)}{\Prob(B)} \]
+
+    \begin{definition}
+        События \(A\) и \(B\) называются \textit{независимыми}, если \(B\) не является невозможным и \(\Prob(A | B) = \Prob(A)\).
+    \end{definition}
+
+    Если \(A\) и \(B\) независимы, справедлива следующая формула:
+    \[ \Prob(A \cap B) = \Prob(A) \cdot \Prob(B) \]
+
+    \begin{definition}
+        События \(A_1, A_2, \ldots, A_n\) называются \textit{независимыми в совокупности}, если\\
+        \(\forall I \subseteq \{1, 2, \ldots, n\} \enspace \prod\limits_{i \in I} \Prob(A_i) = \Prob(\bigcap\limits_{i \in I} A_i)\)
+    \end{definition}
+
+    \begin{remark}
+        Попарной независимости событий \(A_1, A_2, \ldots, A_n\) недостаточно для того, чтобы они были независимыми в совокупности. Контрпример: при броске двух игральных кубиков событие \(A_1\) определим как <<выпало чётное значение на первом кубике>>, событие \(A_2\) как <<выпало чётное значение на втором кубике>>, а событие \(A_3\) как <<сумма значений на кубиках чётная>>. События попарно независимы, но если одновременно наступают любые два из них, третье становится достоверным.
+    \end{remark}
+
+    \begin{definition}
+        События \(A\) и \(B\) называются \textit{несовместными}, если \(\Prob(A | B) = 0\).
+    \end{definition}
+
+    \begin{definition}
+        Множество \(\{A_1, A_2, \ldots, A_n\} \) называется \textit{полной группой событий}, если\\
+        \(\forall i \neq j \Prob(A_i \cap A_j) = 0\) и \(\Prob(\bigcup\limits_{i} A_i) = 1\)
+    \end{definition}
+
+    Если \(S\) --- полная группа событий, то верно следующее утверждение:
+    \[
+        \forall B \in 2^\Omega \enspace \Prob(B) = \sum_{A \in S} B \cap A = \sum_{A \in S} \Prob(B | A) \cdot \Prob(A)
+    \]
+
+\end{document}
