@@ -1,0 +1,68 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{cmap}					
+\usepackage[T2A]{fontenc}			
+\usepackage[utf8]{inputenc}			
+\usepackage[english,russian]{babel}
+\usepackage{mathtext}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{icomma}
+\usepackage{listings}
+
+\lstset{language=C++}
+
+\title{АиСД, пилотный поток. Лекция 4. Сортировки}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	Оценивать сортировки будет по трём критериям:
+	\begin{itemize}
+		\item Является ли сортировкой сравнениями - т.е. сравнивает ли элементы, не затрагивая их внутреннюю структуру
+		\item Устойчивость - не меняют ли одинаковые элементы в исходном массиве свой относительный порядок в отсортированном
+		\item Локальность - отсутствие необходимости во внешней памяти
+	\end{itemize}
+	\begin{center}
+		\begin{tabular}{cccc}
+			& comp & stable & inplace \\
+			MergeSort: & + & + & - \\
+			QSort: & + & - & + \\
+			CountSort: & - & + & - \\
+		\end{tabular}
+	\end{center}
+
+	\subsection*{Время работы QSort}
+	Докажем, что QSort работает за $O(n\log n)$ \\
+	$t(n)=maxE(t(input))$ \\
+	$t(n)=O(n\log n)$ \\
+	$\exists c: t(n) \le cn\log n$ \\
+	Пусть верно для всех $n_0 < n$ \\
+	$t(n) \le an+\sum\limits_{i=1}^n (t(i-1)+t(n-i)) \cdot \frac{1}{n} \le an + \sum\limits_{i=1}^n (c(i-1)\log(i-1) + c(n-i)\log(n-i)) \cdot \frac{1}{n} \le
+	an + \frac{2c}{n} \sum\limits_{i=1}^n i\log i \le an + \frac{2c}{n} \sum\limits_{i=1}^{n/2} i\log i + \frac{2c}{n} \sum\limits_{i=n/2+1}^{n} i\log i \le
+	an + \frac{2c}{n}(\log \frac{n}{2}) \cdot \frac{n}{4} \cdot \frac{2}{n} + \frac{2c}{n} (\log n) \cdot \frac{3n}{4} \cdot \frac{2}{n} \le an + (c\log n - 1)
+	\frac{n}{4} + c\log n \frac{3n}{4} \le an + cn\log n - \frac{n}{4}cn\log n \le cn \log n$ при $c > 8a$\\
+	
+	\subsection*{Нижняя оценка времени работы сортировки сравнениями}
+	Докажем, что для сортировки сравнениями $t(n)=\Omega (n\log n)$ \\
+	Рассмотрим дерево всех вариантов работы алгоритма, где узлу соответствует сравнение 2 элементов. У каждой вершины не более 2 сыновей (т.е. у сравнения 2 исхода). Всего $n!$ перестановок из $n$ элементов, значит, листьев хотя бы $n!$. Бинарное дерево высоты $h$ имеет не более $2^h$ листьев. Значит, высота дерева $\le \log_2$(кол-ва листьев) \\
+	$\log n! \ge \log (\frac{n}{2})^{\frac{n}{2}} = \frac{n}{2} \log \frac{n}{2} = \frac{n}{2}(\log n-1)$ \\
+	
+	\subsection* {Сортировка подсчётом}
+	\begin{lstlisting}
+	p(x) = {i: a[i] <= x}
+	for i: n-1..0
+		b[p[a[i]]] = a[i]
+		p[a[i]] -= 1
+	\end{lstlisting}
+	Сложность $O(n+U)$ \\ \\
+	Пусть максимальное число в исходном массиве $|U|=2^k$ \\
+	Применим сортировку подсчётом $k$ раз к каждому биту от младших к старшим. Тогда инвариант будет соблюдаться в отсортированности по суффиксу, и в итоге вся последовательность будет отсортирована. \\
+	Имеем сложность $O(k\cdot(n+2))$ \\
+	Увеличив алфавит, получим $O(\frac{\log U}{\log p}\cdot(n+2^p))$ \\
+	Выбрав такое $p$, что $2^p \approx n$, добьёмся $O(n \frac{\log U}{\log n})$
+	
+	
+	
+
+\end{document}
