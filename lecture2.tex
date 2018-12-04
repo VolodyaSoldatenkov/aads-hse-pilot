@@ -1,0 +1,88 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{mathtext}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{icomma}
+\usepackage{listings}
+
+\lstset{language=C++}
+
+\title{Случайные величины и мат.ожидание}
+\date{}
+
+\begin{document}
+	\maketitle
+	\noindent $\xi:  \Omega \rightarrow \mathbb{R}$ - \textbf{случайная величина} (численное выражение события)
+
+	\noindent Пример: $p(\xi=3)=\sum\limits_{\omega: \xi(\omega)=3} p(\omega)$\\
+
+	\noindent Пусть  $\Omega \rightarrow \xi_1$, $\Omega \rightarrow \xi_2$ - случайные величины.
+
+	\noindent Они \textbf{независимы}, если $\forall A, B \subset \mathbb{R}$ независимы $\xi_1 \subset A$ и $\xi_1 \subset B$.\\
+
+	\noindent $A$ - событие. Тогда \textbf{индикаторная случайная величина} определяется следующим образом:
+	\begin{equation*}
+	I_a(\omega) =
+	\begin{cases}
+	1, \; \omega\in A\\
+	0, \; \omega \in A
+	\end{cases}
+	\end{equation*}\\
+
+	\noindent $E(\xi)=\sum\limits_{\omega \in \Omega} \xi(\omega)p(w)$ - \textbf{мат.ожидание} (среднее значение случайной величины) \\
+
+	\subsection*{Свойства мат.ожидания}
+	$E(c\xi)=cE(\xi)$\\
+
+
+   	\noindent $E(\alpha\xi_1+\beta\xi_2)=\alpha E(\xi_1)+\beta E(\xi_2)$
+	\begin{proof}
+	По определению:
+	$E(\alpha\xi_1+\beta\xi_2)=\sum\limits_{\omega \in \Omega}(\alpha\xi_1(\omega)+\beta\xi_2(\omega))=\alpha E(\xi_1)+\beta E(\xi_2) $
+	\end{proof}
+    ~\
+
+    \newpage
+	\noindent $E(\xi_1\xi_2)=E(\xi_1)E(\xi_2)$, если $\xi_1, \xi_2$ независимы.
+	\begin{proof}
+	~\
+
+	\noindent $E(\xi)=\sum\limits_{x \in \mathbb{R}}x\cdot p(\xi=x)$\\
+	\noindent $E(\xi_1\xi_2)=\sum\limits_{x \in \mathbb{R}}x\cdot p(\xi_1\xi_2=x)=\sum\limits_{y \in \mathbb{R}}\sum\limits_{z \in \mathbb{R}}y z \cdot p(y \cap z)=\sum\limits_{y \in \mathbb{R}}\sum\limits_{z \in \mathbb{R}}y z \cdot p(y)p(z)=\sum\limits_{y \in \mathbb{R}}p(\xi_1=y)+\sum\limits_{z \in \mathbb{R}}p(\xi_2=z)$
+	\end{proof}
+
+	\noindent $D(\xi)=\sum\limits_{\omega \in \Omega}(\xi(\omega-E(\xi)))^2p(\omega)=E(\xi-E(\xi))$ - \textbf{дисперсия} (разброс значений)
+
+	\subsection*{Примеры}
+	1. Есть $n$ рабочих стоимостью $c_1, c_2, \cdots, c_n$ за единицу времени, и $n$ работ занимающие $t_1, t_2, \cdots, t_n$ времени. Сколько ожидаемо мы заплатим случайной перестановке рабочих? \\
+	$E(\xi \rho)=E\sum\limits_{i=1}^n c(\rho_i)t_i=\sum\limits_{i=1}^n t_i E(c_{\rho_i})=\sum\limits_{i=1}^n t_i \frac{\sum c_i}{n}=\frac{\sum t_i\sum c_i}{n}$ (из линейности мат.ожидания, раскладываем на $n$ функций) \\
+	~\
+
+	\noindent 2. Пусть задан граф $G=(V,E)$, и $A \subset V$. Тогда разрез $U_A$ - это все ребра, соединяющие вершины из А с вершинами не из А. Каково мат.ожидание его размера?\\
+	$E|U_A|=E\sum\limits_{e \in E} I_{e \in U_A}=\sum\limits_{e \in E}p(e \in U_A)=\frac{|E|}{2}$ (т.к. каждая вершина относится к $A$ с вероятностью $\frac{1}{2}$)\\
+	~\
+
+	\noindent 3. Каково мат.ожидание $len$ в жадном поиске НВП?\\
+	\begin{lstlisting}
+	lst=-1
+	len=0
+	for i: 1..n
+	    if p[i] > lst:
+	    	lst = p[i]
+	    	len += 1
+	\end{lstlisting}
+
+	\noindent $E(\xi(\rho))=E\sum\limits_{i=1}^n I_{\rho_i=max(\rho_1, \cdots, \rho_i)}=\sum\limits_{i=1}^n \frac{1}{i}$ (т.к. вероятность, что максимум в
+	последовательности из $i$ элементов будет на $i$-м месте, равна $\frac{1}{i}$)
+
+	\subsection*{Оценка дисперсии}
+	\textbf{Неравенство Маркова}\\
+	$p(\xi>kE(\xi)) \le \frac{1}{k}$ при $\xi(w) \ge 0$, $E(\xi) \ge 0$\\
+
+	\noindent \textbf{Неравенство Чебышева}\\
+	\noindent $p(|\xi-E(\xi)|>a) \le \frac{D(\xi)}{a^2}$
+
+\end{document}
